@@ -1,0 +1,49 @@
+{
+  "name": "spanda",
+  "version": "0.1.0",
+  "description": "procedural interface sounds for the web.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rittikbasu/spanda.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rittikbasu/spanda/issues"
+  },
+  "homepage": "https://github.com/rittikbasu/spanda#readme",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "test": "pnpm build && node --test test/*.test.mjs",
+    "test:browser": "pnpm build && playwright test",
+    "check": "pnpm test && pnpm test:browser && pnpm pack --dry-run",
+    "demo": "pnpm build && node scripts/serve.mjs"
+  },
+  "keywords": [
+    "audio",
+    "interface",
+    "sound",
+    "ui",
+    "ux",
+    "web-audio"
+  ],
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "typescript": "^6.0.2"
+  }
+}

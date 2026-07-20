@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>spanda audition</title>
+    <style>
+      :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; }
+      body { max-width: 48rem; margin: 0 auto; padding: 3rem 1.25rem; line-height: 1.5; }
+      h1 { margin-bottom: 0.25rem; font-size: clamp(2rem, 7vw, 4rem); letter-spacing: -0.06em; }
+      p { color: color-mix(in srgb, currentColor 68%, transparent); }
+      section { margin-top: 2.5rem; }
+      h2 { font-size: 0.8rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
+      .buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+      button { border: 1px solid color-mix(in srgb, currentColor 24%, transparent); border-radius: 999px; padding: 0.65rem 1rem; background: transparent; color: inherit; cursor: pointer; font: inherit; }
+      button:hover, button:focus-visible { background: color-mix(in srgb, currentColor 9%, transparent); }
+      button[aria-pressed="true"] { background: currentColor; color: Canvas; }
+      #status { min-height: 1.5em; margin-top: 1.5rem; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>spanda</h1>
+      <p>procedural interface sounds, synthesized when you need them.</p>
+
+      <section aria-labelledby="profile-heading">
+        <h2 id="profile-heading">profile</h2>
+        <div class="buttons" id="profiles"></div>
+      </section>
+
+      <section aria-labelledby="cue-heading">
+        <h2 id="cue-heading">cue</h2>
+        <div class="buttons" id="cues"></div>
+      </section>
+
+      <p id="status" role="status" aria-live="polite"></p>
+    </main>
+    <script type="module" src="/demo/main.js"></script>
+  </body>
+</html>
