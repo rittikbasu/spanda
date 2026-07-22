@@ -77,7 +77,11 @@ function renderProfiles() {
 
 function positionInstall() {
   const anchor = compactLayout.matches ? cueRoot : profileSet
+  if (anchor.nextElementSibling === install) return
+
+  const focusedElement = install.contains(document.activeElement) ? document.activeElement : null
   anchor.after(install)
+  if (focusedElement instanceof HTMLElement) focusedElement.focus({ preventScroll: true })
 }
 
 function appendBaselineMarker(element) {

@@ -107,6 +107,17 @@ test('restores focus and announces the clipboard fallback', async ({ page }) => 
   await expect(page.locator('#copy-announcement')).toHaveText('install command copied')
 })
 
+test('preserves install focus across responsive relocation', async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 })
+  await page.goto('/')
+
+  const copyButton = page.locator('#copy-install')
+  await copyButton.focus()
+  await page.setViewportSize({ width: 700, height: 900 })
+
+  await expect(copyButton).toBeFocused()
+})
+
 test('returns touch cues to neutral styling after playback', async ({ browser }) => {
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
