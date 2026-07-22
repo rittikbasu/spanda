@@ -1,0 +1,61 @@
+name: deploy audition
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+
+      - name: set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - name: set up node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: build package
+        run: pnpm build
+
+      - name: assemble site
+        run: |
+          mkdir -p _site/demo _site/dist
+          cp demo/index.html _site/index.html
+          cp demo/main.js demo/styles.css _site/demo/
+          cp dist/index.js _site/dist/
+
+      - name: configure pages
+        uses: actions/configure-pages@v6
+
+      - name: upload pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: deploy to github pages
+        id: deployment
+        uses: actions/deploy-pages@v5

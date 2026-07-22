@@ -3,38 +3,74 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>spanda audition</title>
-    <style>
-      :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; }
-      body { max-width: 48rem; margin: 0 auto; padding: 3rem 1.25rem; line-height: 1.5; }
-      h1 { margin-bottom: 0.25rem; font-size: clamp(2rem, 7vw, 4rem); letter-spacing: -0.06em; }
-      p { color: color-mix(in srgb, currentColor 68%, transparent); }
-      section { margin-top: 2.5rem; }
-      h2 { font-size: 0.8rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
-      .buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-      button { border: 1px solid color-mix(in srgb, currentColor 24%, transparent); border-radius: 999px; padding: 0.65rem 1rem; background: transparent; color: inherit; cursor: pointer; font: inherit; }
-      button:hover, button:focus-visible { background: color-mix(in srgb, currentColor 9%, transparent); }
-      button[aria-pressed="true"] { background: currentColor; color: Canvas; }
-      #status { min-height: 1.5em; margin-top: 1.5rem; font-size: 0.9rem; }
-    </style>
+    <meta name="theme-color" content="#f1efe8">
+    <meta name="description" content="listen to spanda's procedural interface sounds.">
+    <title>spanda · procedural interface sounds</title>
+    <link rel="stylesheet" href="./demo/styles.css">
   </head>
   <body>
-    <main>
-      <h1>spanda</h1>
-      <p>procedural interface sounds, synthesized when you need them.</p>
+    <div class="shell">
+      <main class="stage">
+        <section class="identity" aria-labelledby="page-title">
+          <div class="identity__lockup">
+            <h1 id="page-title">spanda</h1>
+            <span class="identity__script" lang="sa">स्पन्द</span>
+          </div>
+          <p class="identity__copy">sounds for interfaces you can almost feel.</p>
 
-      <section aria-labelledby="profile-heading">
-        <h2 id="profile-heading">profile</h2>
-        <div class="buttons" id="profiles"></div>
-      </section>
+          <div class="resonance-block">
+            <div class="resonance" id="resonance" data-voice="tactile" aria-hidden="true">
+              <span class="resonance__axis resonance__axis--x"></span>
+              <span class="resonance__axis resonance__axis--y"></span>
+              <span class="resonance__core"></span>
+              <span class="resonance__pulse resonance__pulse--1"></span>
+              <span class="resonance__pulse resonance__pulse--2"></span>
+              <span class="resonance__pulse resonance__pulse--3"></span>
+            </div>
 
-      <section aria-labelledby="cue-heading">
-        <h2 id="cue-heading">cue</h2>
-        <div class="buttons" id="cues"></div>
-      </section>
+            <div class="readout" id="readout" role="status" aria-live="polite">
+              <div class="readout__line">
+                <span class="readout__signal" aria-hidden="true"></span>
+                <strong class="readout__cue" id="status-cue">ready</strong>
+              </div>
+              <span class="readout__meta" id="status-meta">tactile voice</span>
+            </div>
+          </div>
 
-      <p id="status" role="status" aria-live="polite"></p>
-    </main>
-    <script type="module" src="/demo/main.js"></script>
+          <fieldset class="profile-set">
+            <legend>voice profile</legend>
+            <div class="profiles" id="profiles"></div>
+          </fieldset>
+        </section>
+
+        <section class="audition" aria-labelledby="cue-heading">
+          <div class="section-head">
+            <h2 id="cue-heading">listen</h2>
+            <span class="section-head__hint">choose a voice, tap a cue</span>
+          </div>
+          <div class="cues" id="cues"></div>
+
+          <div class="install">
+            <span class="install__label">install</span>
+            <div class="install__command">
+              <code>npm install spanda</code>
+              <button class="install__copy" id="copy-install" type="button" aria-label="copy install command">
+                <span id="copy-state" aria-hidden="true">copy</span>
+              </button>
+              <span class="visually-hidden" id="copy-announcement" role="status" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <footer class="page-foot">
+            <span>~4.2 kB min+gzip · 0 audio files · 0 deps</span>
+            <nav class="page-foot__links" aria-label="project links">
+              <a href="https://github.com/rittikbasu/spanda">github ↗</a>
+            </nav>
+          </footer>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./demo/main.js"></script>
   </body>
 </html>

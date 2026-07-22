@@ -1,8 +1,14 @@
-# spanda
+# spanda (स्पन्द)
 
 procedural interface sounds for the web.
 
-spanda synthesizes a small set of tactile ui cues with the Web Audio API. there are no audio files, framework adapters, runtime dependencies, or background work before playback.
+**~4.2 kB minified + gzipped · zero dependencies · zero audio files · typescript types included**
+
+spanda synthesizes a small set of tactile ui sounds with the web audio api. there are no audio assets to preload. its plain api works with any framework.
+
+the name comes from *spanda* (स्पन्द), sanskrit for pulse or vibration.
+
+[listen to every cue and profile](https://rittikbasu.github.io/spanda/)
 
 ## install
 
@@ -10,45 +16,45 @@ spanda synthesizes a small set of tactile ui cues with the Web Audio API. there 
 npm install spanda
 ```
 
-spanda is an esm package for modern browsers.
+spanda ships as esm for modern browsers.
 
-## usage
+## quick start
 
 ```js
 import { createSpanda } from 'spanda'
 
-const sound = createSpanda({ profile: 'tactile' })
+const sound = createSpanda()
 
 button.addEventListener('click', () => {
   sound.play('confirm')
 })
 ```
 
-create one instance for your app. the audio context, compressor, reverb and shared buffers are created lazily on the first `play()` or `resume()` call.
+create one instance for your app. spanda creates its audio context and shared graph on the first `play()` or `resume()` call, not when the module is imported.
 
 ## cues
 
-```js
-sound.play('tap')
-sound.play('type')
-sound.play('toggleOn')
-sound.play('toggleOff')
-sound.play('notify')
-sound.play('open')
-sound.play('close')
-sound.play('send')
-sound.play('confirm')
-sound.play('error')
-sound.play('complete')
-```
+| cue | use |
+| --- | --- |
+| `tap` | buttons and lightweight interactions |
+| `type` | quiet, repeatable progress feedback |
+| `toggleOn`, `toggleOff` | binary state changes |
+| `notify` | incoming updates |
+| `open`, `close` | surfaces and navigation |
+| `send` | outgoing actions |
+| `confirm` | routine task completion |
+| `error` | failed actions |
+| `complete` | finishing an entire flow |
 
-`type` is intentionally quiet enough for repeated progress feedback. `confirm` closes a routine task. `complete` is a longer composed cue for finishing an entire flow, voiced to match each profile.
+`complete` is a longer composed cue with different voicing for each profile.
 
 ## profiles
 
-- `tactile` — balanced, compact and physical
-- `crisp` — bright, precise and phone-speaker friendly
-- `lush` — soft, rounded and more spacious
+| profile | character |
+| --- | --- |
+| `tactile` | balanced, compact and physical |
+| `crisp` | bright, precise and phone-speaker friendly |
+| `lush` | soft, rounded and more spacious |
 
 change the profile without rebuilding the audio graph:
 
@@ -56,7 +62,7 @@ change the profile without rebuilding the audio graph:
 sound.setProfile('crisp')
 ```
 
-override the profile for one cue without changing the instance default:
+override it for one cue without changing the instance default:
 
 ```js
 sound.play('tap', { profile: 'crisp' })
@@ -65,7 +71,7 @@ sound.play('complete', { profile: 'lush' })
 
 ## custom profiles
 
-built-in profiles are frozen plain objects. copy one and change only what matters:
+built-in profiles are deeply frozen plain objects. copy one and change only what matters:
 
 ```js
 import { createSpanda, profiles } from 'spanda'
@@ -80,11 +86,11 @@ const muted = {
 const sound = createSpanda({ profile: muted })
 ```
 
-copied profiles retain their completion voice through `completionStyle`. profiles created from scratch can set it to `tactile`, `crisp` or `lush`; the default is `tactile`.
+a profile copied from a built-in keeps its completion voice. profiles created from scratch can set `completionStyle` to `tactile`, `crisp` or `lush`; the default is `tactile`.
 
 ## custom cues
 
-A cue is also a plain object:
+a cue is a plain object too:
 
 ```js
 sound.play({
@@ -99,7 +105,7 @@ sound.play({
 })
 ```
 
-This is deliberately the whole extension model: profiles describe the voice, recipes describe the gesture.
+profiles describe the voice. cue recipes describe the gesture. that is the whole extension model.
 
 ## control
 
@@ -111,23 +117,14 @@ await sound.resume()       // useful inside an explicit user gesture
 await sound.destroy()      // closes the owned context
 ```
 
-Importing spanda is safe during server rendering. If Web Audio is unavailable or a browser blocks playback, calls fail closed instead of interrupting the host application.
+## browser behavior
 
-## audition
-
-```sh
-pnpm install
-pnpm demo
-```
-
-Open `http://127.0.0.1:4174` to compare every cue and profile.
+start playback from a user gesture such as a click so the browser can allow audio. importing spanda during server rendering is safe. if the web audio api is unavailable or playback is blocked, sound calls become no-ops instead of interrupting the app.
 
 ## development
 
 ```sh
-pnpm test
-pnpm run test:browser
+pnpm install
+pnpm demo
 pnpm run check
 ```
-
-The test suite stays intentionally small: focused engine behavior plus one real-browser pass through the compiled package.
